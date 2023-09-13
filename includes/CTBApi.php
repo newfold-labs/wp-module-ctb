@@ -38,7 +38,7 @@ class CTBApi {
 						return new WP_Error( 500, 'Customer ID is required for CTB' );
 					}
 
-					// Capability check for CTB support
+					// Capability check for Global CTB support
 					$capability  = new SiteCapabilities();
 					if ( $capability->get( 'canAccessGlobalCTB' ) ) {
 						return new WP_Error( 500, 'Not able to access CTBs.' );

@@ -4,13 +4,13 @@
 		let ctbId = e.target.getAttribute('data-ctb-id');
 		e.target.closest('.ctb-actions').innerHTML = '<div class="ctb-loader"></div>';
 		window.fetch(
-			`${ window.nfdplugin.restApiUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
+			`${ window.NewfoldRuntime.restUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
 			{
 				credentials: 'same-origin',
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-WP-Nonce': window.nfdplugin.restApiNonce,
+					'X-WP-Nonce': window.NewfoldRuntime.restNonce,
 				},
 			}
 		)
@@ -34,12 +34,12 @@
 		let modal = openModal(e, ctbId);
 		let modalWindow = modal.querySelector('.ctb-modal-content');
 		window.fetch(
-			`${ window.nfdplugin.restApiUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
+			`${ window.NewfoldRuntime.restUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
 			{
 				credentials: 'same-origin',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-WP-Nonce': window.nfdplugin.restApiNonce,
+					'X-WP-Nonce': window.NewfoldRuntime.restNonce,
 				},
 			}
 		)
@@ -113,13 +113,13 @@
 		if (notice) {
 			notice.parentNode.removeChild(notice);
 			window.fetch(
-				`${ window.nfdplugin.restApiUrl }/newfold-notifications/v1/notifications/${ notice.dataset.id }`,
+				`${ window.NewfoldRuntime.restUrl }/newfold-notifications/v1/notifications/${ notice.dataset.id }`,
 				{
 					credentials: 'same-origin',
 					method: 'DELETE',
 					headers: {
 						'Content-Type': 'application/json',
-						'X-WP-Nonce': window.nfdplugin.restApiNonce,
+						'X-WP-Nonce': window.NewfoldRuntime.restNonce,
 					},
 				}
 			);
