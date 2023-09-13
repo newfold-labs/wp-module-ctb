@@ -126,12 +126,27 @@
 		}
 	}
 
+	/**
+	 * Can access global CTB - checks corresponding NewfoldRuntime capability
+	 */
+	const supportsGlobalCTB = () => {
+		return (
+			"NewfoldRuntime" in window &&
+			"capabilities" in window.NewfoldRuntime &&
+			"canAccessGlobalCTB" in window.NewfoldRuntime.capabilities &&
+			window.NewfoldRuntime.capabilities.canAccessGlobalCTB === true
+		);
+	}
+
 	window.addEventListener(
 		'load',
 		() => {
 			document.getElementById('wpwrap').addEventListener('click', function(event) {
 				if (event.target.dataset.action === 'load-nfd-ctb') {
-					if ( window.nfdctb.supportsCTB ) { // has token and customer id
+					if ( 
+						! supportsGlobalCTB() && // can NOT access global ctb
+						window.nfdctb.supportsCTB // but does support legacy ctb
+					) { // has token and customer id
 						event.preventDefault();
 						loadCtb(event);
 					} else {
