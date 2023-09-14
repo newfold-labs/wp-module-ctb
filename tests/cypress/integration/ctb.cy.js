@@ -12,15 +12,10 @@ describe('Click to buy', function () {
 		}, products ).as('products');
 
 		cy.visit('/wp-admin/admin.php?page=' + Cypress.env('pluginId') + '#/marketplace', {
-			onBeforeLoad(contentWindow) {
-				let nfdctb = {
-					supportsCTB: true
-				};
-				// set supportsCTB to true, so the ctb click will pass to the endpoint and be intercepted
-				Object.defineProperty(contentWindow, 'nfdctb', {
-					configurable: false,
-					writable: false,
-					value: nfdctb 
+			onBeforeLoad() {
+				cy.window().then((win) => {
+					win.nfdctb.supportsCTB = true;
+					win.NewfoldRuntime.capabilities.canAccessGlobalCTB = false;
 				});
 			}
 		});
