@@ -2,12 +2,12 @@
 
 namespace NewFoldLabs\WP\Module\CTB;
 
-use function NewfoldLabs\WP\ModuleLoader\container;
-
 use NewfoldLabs\WP\Module\Data\HiiveConnection;
 use NewfoldLabs\WP\Module\Data\SiteCapabilities;
 use NewfoldLabs\WP\Module\CustomerBluehost\CustomerBluehost;
 use WP_Error;
+
+use function NewfoldLabs\WP\ModuleLoader\container;
 
 /**
  * Class CTBApi
@@ -113,5 +113,4 @@ class CTBApi {
 			)
 		);
 	}
-
 }
