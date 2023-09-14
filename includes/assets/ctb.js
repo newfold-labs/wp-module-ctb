@@ -4,13 +4,13 @@
 		let ctbId = e.target.getAttribute('data-ctb-id');
 		e.target.closest('.ctb-actions').innerHTML = '<div class="ctb-loader"></div>';
 		window.fetch(
-			`${ window.nfdplugin.restApiUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
+			`${ window.NewfoldRuntime.restUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
 			{
 				credentials: 'same-origin',
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-WP-Nonce': window.nfdplugin.restApiNonce,
+					'X-WP-Nonce': window.NewfoldRuntime.restNonce,
 				},
 			}
 		)
@@ -34,12 +34,12 @@
 		let modal = openModal(e, ctbId);
 		let modalWindow = modal.querySelector('.ctb-modal-content');
 		window.fetch(
-			`${ window.nfdplugin.restApiUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
+			`${ window.NewfoldRuntime.restUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
 			{
 				credentials: 'same-origin',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-WP-Nonce': window.nfdplugin.restApiNonce,
+					'X-WP-Nonce': window.NewfoldRuntime.restNonce,
 				},
 			}
 		)
@@ -113,17 +113,29 @@
 		if (notice) {
 			notice.parentNode.removeChild(notice);
 			window.fetch(
-				`${ window.nfdplugin.restApiUrl }/newfold-notifications/v1/notifications/${ notice.dataset.id }`,
+				`${ window.NewfoldRuntime.restUrl }/newfold-notifications/v1/notifications/${ notice.dataset.id }`,
 				{
 					credentials: 'same-origin',
 					method: 'DELETE',
 					headers: {
 						'Content-Type': 'application/json',
-						'X-WP-Nonce': window.nfdplugin.restApiNonce,
+						'X-WP-Nonce': window.NewfoldRuntime.restNonce,
 					},
 				}
 			);
 		}
+	}
+
+	/**
+	 * Can access global CTB - checks corresponding NewfoldRuntime capability
+	 */
+	const supportsGlobalCTB = () => {
+		return (
+			"NewfoldRuntime" in window &&
+			"capabilities" in window.NewfoldRuntime &&
+			"canAccessGlobalCTB" in window.NewfoldRuntime.capabilities &&
+			window.NewfoldRuntime.capabilities.canAccessGlobalCTB === true
+		);
 	}
 
 	window.addEventListener(
@@ -131,7 +143,10 @@
 		() => {
 			document.getElementById('wpwrap').addEventListener('click', function(event) {
 				if (event.target.dataset.action === 'load-nfd-ctb') {
-					if ( window.nfdctb.supportsCTB ) { // has token and customer id
+					if ( 
+						! supportsGlobalCTB() && // can NOT access global ctb
+						window.nfdctb.supportsCTB // but does support legacy ctb
+					) { // has token and customer id
 						event.preventDefault();
 						loadCtb(event);
 					} else {

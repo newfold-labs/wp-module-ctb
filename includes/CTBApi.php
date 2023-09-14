@@ -2,11 +2,12 @@
 
 namespace NewFoldLabs\WP\Module\CTB;
 
-use function NewfoldLabs\WP\ModuleLoader\container;
-
 use NewfoldLabs\WP\Module\Data\HiiveConnection;
+use NewfoldLabs\WP\Module\Data\SiteCapabilities;
 use NewfoldLabs\WP\Module\CustomerBluehost\CustomerBluehost;
 use WP_Error;
+
+use function NewfoldLabs\WP\ModuleLoader\container;
 
 /**
  * Class CTBApi
@@ -35,6 +36,12 @@ class CTBApi {
 					$customer_data = CustomerBluehost::collect();
 					if ( empty( $customer_data ) || ! isset( $customer_data['customer_id'] ) ) {
 						return new WP_Error( 500, 'Customer ID is required for CTB' );
+					}
+
+					// Capability check for Global CTB support
+					$capability  = new SiteCapabilities();
+					if ( $capability->get( 'canAccessGlobalCTB' ) ) {
+						return new WP_Error( 500, 'Not able to access CTBs.' );
 					}
 
 					$response = wp_remote_get(
@@ -106,5 +113,4 @@ class CTBApi {
 			)
 		);
 	}
-
 }
