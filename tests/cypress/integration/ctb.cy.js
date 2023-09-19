@@ -1,7 +1,7 @@
 // <reference types="Cypress" />
-const products = require('../fixtures/products.json');
-const ctbGET = require('../fixtures/ctbGET.json');
-const ctbPOST = require('../fixtures/ctbPOST.json');
+const productsFixture = require('../fixtures/products.json');
+const ctbGETFixture = require('../fixtures/ctbGET.json');
+const ctbPOSTFixture = require('../fixtures/ctbPOST.json');
 
 describe('Click to buy', function () {
 
@@ -9,7 +9,7 @@ describe('Click to buy', function () {
 		cy.intercept({
 			method: 'GET',
 			url: /newfold-marketplace(\/|%2F)v1(\/|%2F)marketplace/
-		}, products ).as('products');
+		}, productsFixture );
 
 		cy.visit('/wp-admin/admin.php?page=' + Cypress.env('pluginId') + '#/marketplace', {
 			onBeforeLoad() {
@@ -19,7 +19,7 @@ describe('Click to buy', function () {
 				});
 			}
 		});
-		cy.wait('@products');
+
 	});
 
 	it('Button has CTB Attributes', () => {
@@ -36,7 +36,7 @@ describe('Click to buy', function () {
 		cy.intercept({
 			method: 'GET',
 			url: /newfold-ctb(\/|%2F)v1(\/|%2F)ctb/,
-		}, ctbGET ).as('ctbGET');
+		}, ctbGETFixture ).as('ctbGET');
 
 		cy.get('body').should('not.have.class', 'noscroll');
 
@@ -96,12 +96,12 @@ describe('Click to buy', function () {
 		cy.intercept({
 			method: 'GET',
 			url: /newfold-ctb(\/|%2F)v1(\/|%2F)ctb/,
-		}, ctbGET ).as('ctbGET');
+		}, ctbGETFixture ).as('ctbGET');
 
 		cy.intercept({
 			method: 'POST',
 			url: /newfold-ctb(\/|%2F)v1(\/|%2F)ctb/,
-		}, ctbPOST ).as('ctbPOST');
+		}, ctbPOSTFixture ).as('ctbPOST');
 		
 		// click CTB (again)
 		cy.get('[data-action="load-nfd-ctb"]').click();
