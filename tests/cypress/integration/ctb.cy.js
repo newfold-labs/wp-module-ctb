@@ -1,5 +1,5 @@
 // <reference types="Cypress" />
-const productsFixture = require('../fixtures/products.json');
+const ctbProductsFixture = require('../fixtures/ctb-products.json');
 const ctbGETFixture = require('../fixtures/ctbGET.json');
 const ctbPOSTFixture = require('../fixtures/ctbPOST.json');
 
@@ -10,7 +10,7 @@ describe('Click to buy', function () {
 		cy.intercept({
 			method: 'GET',
 			url: /newfold-marketplace(\/|%2F)v1(\/|%2F)marketplace/
-		}, productsFixture ).as( 'marketplace' );
+		}, ctbProductsFixture ).as( 'ctbProductsFixture' );
 
 		cy.visit('/wp-admin/admin.php?page=' + Cypress.env('pluginId') + '#/marketplace', {
 			onBeforeLoad() {
