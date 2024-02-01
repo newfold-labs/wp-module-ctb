@@ -6,6 +6,7 @@ const ctbPOSTFixture = require('../fixtures/ctbPOST.json');
 describe('Click to buy', function () {
 
 	before(() => {
+		cy.exec('npx wp-env run cli wp transient delete newfold_marketplace');
 		cy.intercept({
 			method: 'GET',
 			url: /newfold-marketplace(\/|%2F)v1(\/|%2F)marketplace/
@@ -23,6 +24,12 @@ describe('Click to buy', function () {
 	});
 
 	it('Button has CTB Attributes', () => {
+		cy.window().then(
+			(win)=>{
+				cy.log(`nfdctb.supportsCTB: ${win.nfdctb.supportsCTB}`);
+			}
+		);
+
 		cy.get('#marketplace-item-a1ff70f1-9670-4e25-a0e1-a068d3e43a45')
 			.scrollIntoView()
 			.should('exist')
