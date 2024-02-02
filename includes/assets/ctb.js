@@ -4,7 +4,7 @@
 		let ctbId = e.target.getAttribute('data-ctb-id');
 		e.target.closest('.ctb-actions').innerHTML = '<div class="ctb-loader"></div>';
 		window.fetch(
-			`${ window.NewfoldRuntime.restUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
+			`${ window.NewfoldRuntime.restUrl }newfold-ctb/v1/ctb/${ ctbId }`,
 			{
 				credentials: 'same-origin',
 				method: 'POST',
@@ -34,7 +34,7 @@
 		let modal = openModal(e, ctbId);
 		let modalWindow = modal.querySelector('.ctb-modal-content');
 		window.fetch(
-			`${ window.NewfoldRuntime.restUrl }/newfold-ctb/v1/ctb/${ ctbId }`,
+			`${ window.NewfoldRuntime.restUrl }newfold-ctb/v1/ctb/${ ctbId }`,
 			{
 				credentials: 'same-origin',
 				headers: {
@@ -88,10 +88,10 @@
 		document.querySelector('body').classList.add('noscroll');
 
 		purchaseStatus = false;
-		
+
 		return ctbContainer;
 	}
-	
+
 	const closeModal = (e) => {
 		ctbmodal.destroy();
 		document.querySelector('body').classList.remove('noscroll');
@@ -113,7 +113,7 @@
 		if (notice) {
 			notice.parentNode.removeChild(notice);
 			window.fetch(
-				`${ window.NewfoldRuntime.restUrl }/newfold-notifications/v1/notifications/${ notice.dataset.id }`,
+				`${ window.NewfoldRuntime.restUrl }newfold-notifications/v1/notifications/${ notice.dataset.id }`,
 				{
 					credentials: 'same-origin',
 					method: 'DELETE',
@@ -143,7 +143,7 @@
 		() => {
 			document.getElementById('wpwrap').addEventListener('click', function(event) {
 				if (event.target.dataset.action === 'load-nfd-ctb') {
-					if ( 
+					if (
 						! supportsGlobalCTB() && // can NOT access global ctb
 						window.nfdctb.supportsCTB // but does support legacy ctb
 					) { // has token and customer id
