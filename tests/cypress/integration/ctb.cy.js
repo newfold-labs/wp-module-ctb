@@ -7,13 +7,14 @@ describe('Click to buy', function () {
 
 	before(() => {
 		cy.exec( 'npx wp-env run cli wp transient delete newfold_marketplace' );
+		cy.visit( '/wp-admin/index.php' );
 		cy.intercept({
 			method: 'GET',
 			url: /newfold-marketplace(\/|%2F)v1(\/|%2F)marketplace/
 		}, ctbProductsFixture ).as( 'ctbProductsFixture' );
 
 		cy.visit('/wp-admin/admin.php?page=' + Cypress.env('pluginId') + '#/marketplace', {
-			onBeforeLoad() {
+			onLoad() {
 				cy.window().then((win) => {
 					win.nfdctb.supportsCTB = true;
 					win.NewfoldRuntime.capabilities.canAccessGlobalCTB = false;
